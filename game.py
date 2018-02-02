@@ -31,9 +31,12 @@ def main():
     ### End of game engine skeleton
     # Here the game starts
 
-    my_plane = planes.PlaneHuman(100,500)
+    bullets = []
+    my_plane = planes.PlaneHuman(100,500, space, bullets)
     plane_body, plane_shape = my_plane.plane_body, my_plane.plane_shape
     space.add(plane_body, plane_shape)
+
+
     while running:
 
         for event in pygame.event.get():  # pętla eventowa
@@ -42,8 +45,8 @@ def main():
         keys = pygame.key.get_pressed()
 
         my_plane.update(keys)
-
-
+        for bullet in bullets:
+            bullet.update()
         ### Clear screen
         screen.fill(pygame.color.THECOLORS["black"])
 
@@ -52,7 +55,7 @@ def main():
         # draw(screen, space)
 
         pygame.display.flip()
-
+        print(len(bullets))
         ### Update physics
         fps = 60
         dt = 1. / fps
