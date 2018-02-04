@@ -5,16 +5,28 @@ import sys
 
 import pygame
 from pygame.locals import *
-from pygame.color import *
 import pymunk
-
 import pymunk.pygame_util
 
 import constants
 import planes
 
+
+def plane_collision_handler(arbiter, space, data):
+    print("plane collision!")
+
+    return False
+
+def bullet_collision_handler(arbiter, space, data):
+    print("bullet hit!")
+
+    return False
+
+### Global parameters
+
+
+
 def main():
-    global PLANE_MOVING_SPEED
     ### PyGame init
 
     pygame.init()
@@ -31,15 +43,29 @@ def main():
     ### End of game engine skeleton
     # Here the game starts
 
+    # Collision handling
+    collision_plane_to_plane_handler = space.add_collision_handler(  # Collision between plane and plane
+        constants.PLANE_COLLISION_TYPE, constants.PLANE_COLLISION_TYPE
+    )
+    collision_plane_to_plane_handler.pre_solve = plane_collision_handler
+
+    collision_bullet_to_plane_handler = space.add_collision_handler(  # Collision between plane and bullet
+        constants.PLANE_COLLISION_TYPE, constants.BULLET_COLLISION_TYPE
+    )
+    collision_bullet_to_plane_handler.pre_solve = bullet_collision_handler
+
     bullets = []
     my_plane = planes.PlaneHuman(100,500, space, bullets)
     plane_body, plane_shape = my_plane.plane_body, my_plane.plane_shape
     space.add(plane_body, plane_shape)
 
+    dummy_plane = planes.DummyPlane(400,500, space, bullets)
+    dummy_body, dummy_shape = dummy_plane.plane_body, dummy_plane.plane_shape
+    space.add(dummy_body, dummy_shape)
 
     while running:
 
-        for event in pygame.event.get():  # pętla eventowa
+        for event in pygame.event.get():  # event loop
             if event.type == QUIT:
                 running = False
         keys = pygame.key.get_pressed()
@@ -55,7 +81,7 @@ def main():
         # draw(screen, space)
 
         pygame.display.flip()
-        print(len(bullets))
+
         ### Update physics
         fps = 60
         dt = 1. / fps

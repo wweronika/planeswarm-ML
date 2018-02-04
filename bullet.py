@@ -7,6 +7,7 @@ class Bullet:
         self.bullet_body = pymunk.Body(constants.BULLET_MASS, constants.BULLET_INERTIA, body_type=pymunk.Body.DYNAMIC)
         self.bullet_body.position = position + Vec2d(40,5).rotated(angle)
         self.bullet_shape = pymunk.Circle(self.bullet_body, 5)
+        self.bullet_shape.collision_type = constants.BULLET_COLLISION_TYPE
         self.movement_vector = Vec2d(constants.BULLET_SPEED, 0).rotated(angle)
         self.space = space
         self.bullets = bullets

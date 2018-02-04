@@ -18,6 +18,7 @@ class Plane:
         self.plane_body.center_of_gravity = constants.PLANE_GRAVITY_CENTER
         self.plane_body.position = start_x, start_y
         self.plane_shape = pymunk.Poly(self.plane_body, constants.PLANE_VERTICES)
+        self.plane_shape.collision_type = constants.PLANE_COLLISION_TYPE
         self.plane_body.angle = 0  # works, no idea why
         self.speed = constants.PLANE_STARTING_SPEED
         self.space = space
@@ -32,6 +33,11 @@ class Plane:
 class PlaneAI(Plane):
     def update(self):
         pass  # TODO
+
+
+class DummyPlane(Plane):
+    def update(self):
+        pass  # just stand where u are, i'm gonna use you for collision detection
 
 
 class PlaneHuman(Plane):
