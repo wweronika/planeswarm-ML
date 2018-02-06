@@ -18,7 +18,9 @@ class GameState(Enum):
     a_won = 1
     b_won = 2
     collision = 3
-    quit = 4
+    a_crashed = 4
+    b_crashed = 5
+    quit = 6
 
 
 class Game():
@@ -89,9 +91,8 @@ class Game():
 
     def test_vs_dummy(self):
         """
-        Trains the network and lets the user see
-        the progress made by the network.
-        Simulation runs in real-time
+        Fly freely, one dummy plane is spawned to test collisions
+        Method used just for testing
         """
         self.create_basic_game_components()
         self.initialise_collisions()  # Collision handling
@@ -156,11 +157,11 @@ class Game():
         # Object spawning
         bullets = []
 
-        my_plane = planes.PlaneHuman(100, 500, self.space, bullets, constants.PLANE_B_COLLISION_TYPE)
-        self.space.add(my_plane.plane_body, my_plane.plane_shape)
+        B_plane = planes.PlaneHuman(100, 500, self.space, bullets, constants.PLANE_B_COLLISION_TYPE)
+        self.space.add(B_plane.plane_body, B_plane.plane_shape)
 
-        dummy_plane = planes.DummyPlane(400, 500, self.space, bullets, constants.PLANE_A_COLLISION_TYPE)
-        self.space.add(dummy_plane.plane_body, dummy_plane.plane_shape)
+        A_plane = planes.DummyPlane(400, 500, self.space, bullets, constants.PLANE_A_COLLISION_TYPE)
+        self.space.add(A_plane.plane_body, A_plane.plane_shape)
 
         self.game_state = GameState.running
 
@@ -173,16 +174,16 @@ class Game():
 
             # Plane rotation
             if keys[K_LEFT]:
-                my_plane.turn(planes.DIRECTION.LEFT)
+                B_plane.turn(planes.DIRECTION.LEFT)
 
             elif keys[K_RIGHT]:
-                my_plane.turn(planes.DIRECTION.RIGHT)
+                B_plane.turn(planes.DIRECTION.RIGHT)
 
             if keys[K_SPACE]:
-                my_plane.shoot()
+                B_plane.shoot()
 
-            my_plane.update()
-            dummy_plane.shoot()
+            B_plane.update()
+            A_plane.shoot()
             for bullet in bullets:
                 bullet.update()
             ### Clear screen
@@ -205,7 +206,6 @@ class Game():
 
 def main():
     myGame = Game()
-    myGame.test_vs_dummy()
     myGame.train_visible()
 
 

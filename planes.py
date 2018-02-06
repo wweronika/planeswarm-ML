@@ -37,7 +37,7 @@ class Plane:
             self.speed = constants.PLANE_MAX_SPEED
         self.plane_body.position += Vec2d(self.speed, 0).rotated(self.plane_body.angle)
         # self.plane_body.position += Vec2d(0,-0.2)
-        if self.ammo < 10:
+        if self.ammo < constants.PLANE_STARTING_AMMO:
             self.ammo += 0.1
         else:
             self.can_shoot = True
