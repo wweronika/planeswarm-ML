@@ -2,6 +2,7 @@ import constants
 import pymunk
 from pymunk.vec2d import Vec2d
 
+
 class Bullet:
     def __init__(self, space, position, angle, bullets):
         self.bullet_body = pymunk.Body(constants.BULLET_MASS, constants.BULLET_INERTIA, body_type=pymunk.Body.DYNAMIC)
